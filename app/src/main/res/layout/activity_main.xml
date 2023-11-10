@@ -11,10 +11,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5">
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -39,11 +39,9 @@
                 android:layout_width="312dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
-                android:layout_marginBottom="80dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:text="CALCULATE"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -70,9 +68,10 @@
                 android:ems="10"
                 android:gravity="center_vertical"
                 android:hint="Cost of Service"
-                android:inputType="text"
+                android:inputType="number|numberDecimal"
                 android:paddingHorizontal="15dp"
                 android:paddingVertical="15dp"
+                android:textColor="@android:color/black"
                 android:textColorHint="@android:color/darker_gray"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
@@ -159,6 +158,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView2"
                 app:srcCompat="@drawable/baseline_arrow_outward_24" />
+
+            <TextView
+                android:id="@+id/textViewResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
+                android:text="Tip: $ ?"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonCalculate"
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
