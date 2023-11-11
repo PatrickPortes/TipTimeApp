@@ -1,6 +1,5 @@
 package com.example.tiptimeapp
 
-import android.R
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Button
@@ -74,13 +73,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun validateFields(tip: String) {
 
-        if (tip.isEmpty() || tip.equals("")) {
+        if (tip.isEmpty() || tip == "") {
             Toast.makeText(this, "Please, Add a Cost of Service!!!", Toast.LENGTH_SHORT).show()
         } else {
             calculateTipResult(tip)
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun calculateTipResult(tip: String) {
 
         val resultTip = tip.toDouble()
@@ -89,35 +89,38 @@ class MainActivity : AppCompatActivity() {
 
             //Toast.makeText(this, radioButtonOne.text.toString(), Toast.LENGTH_SHORT).show()
             val tip20 = resultTip * 0.20
-            validateSwitch()
-            txtResult.text = "Tip: $ ${tip20}"
+            roundUpTip(tip20)
 
         } else if (radioButtonTwo.isChecked) {
 
             //Toast.makeText(this, radioButtonTwo.text.toString(), Toast.LENGTH_SHORT).show()
             val tip18 = resultTip * 0.18
-            validateSwitch()
-            txtResult.text = "Tip: $ ${tip18}"
+            roundUpTip(tip18)
 
         } else if (radioButtonThree.isChecked) {
 
             //Toast.makeText(this, radioButtonThree.text.toString(), Toast.LENGTH_SHORT).show()
             val tip15 = resultTip * 0.15
-            validateSwitch()
-            txtResult.text = "Tip: $ ${tip15}"
+            roundUpTip(tip15)
 
         } else {
             Toast.makeText(this, "Please, Select How was the Service!!!", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun validateSwitch() {
+    @SuppressLint("SetTextI18n")
+    private fun roundUpTip(result: Double) {
 
         if (switch.isChecked) {
-            Toast.makeText(this, "Round up Tip!!!", Toast.LENGTH_SHORT).show()
-            //Round Up Tip:
-            TODO()
-        }
+            //Toast.makeText(this, "Round up Tip!!!", Toast.LENGTH_SHORT).show()
 
+            //Round Up Tip:
+            val roundedUp = kotlin.math.ceil(result)
+            txtResult.text = "Tip: $ $roundedUp"
+
+        } else{
+            txtResult.text = "Tip: $ $result"
+        }
     }
+
 }
