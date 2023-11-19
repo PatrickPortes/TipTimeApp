@@ -11,6 +11,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.tiptimeapp.databinding.ActivityMainBinding
 
 
@@ -31,6 +33,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btCalculate: Button
     private lateinit var txtResult: TextView
 
+    //ViewModel:
+    private lateinit var myViewModel: MyViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,10 +55,7 @@ class MainActivity : AppCompatActivity() {
 
         //Calculate
         btCalculate.setOnClickListener {
-
-            val tip = etCost.text.toString()
-
-            validateFields(tip)
+            validateFields(etCost.text.toString())
         }
     }
 
@@ -71,6 +73,9 @@ class MainActivity : AppCompatActivity() {
         btCalculate = binding.buttonCalculate
 
         txtResult = binding.textViewResult
+
+        // Inicialize o ViewModel
+        myViewModel = ViewModelProvider(this).get(MyViewModel::class.java)
     }
 
     private fun validateFields(tip: String) {
@@ -89,21 +94,18 @@ class MainActivity : AppCompatActivity() {
 
         if (radioButtonOne.isChecked) {
 
-            //Toast.makeText(this, radioButtonOne.text.toString(), Toast.LENGTH_SHORT).show()
-            val tip20 = resultTip * 0.20
-            roundUpTip(tip20)
+            val tipAmount = myViewModel.calculateTip20(resultTip)
+            roundUpTip(tipAmount)
 
         } else if (radioButtonTwo.isChecked) {
 
-            //Toast.makeText(this, radioButtonTwo.text.toString(), Toast.LENGTH_SHORT).show()
-            val tip18 = resultTip * 0.18
-            roundUpTip(tip18)
+            val tipAmount = myViewModel.calculateTip18(resultTip)
+            roundUpTip(tipAmount)
 
         } else if (radioButtonThree.isChecked) {
 
-            //Toast.makeText(this, radioButtonThree.text.toString(), Toast.LENGTH_SHORT).show()
-            val tip15 = resultTip * 0.15
-            roundUpTip(tip15)
+            val tipAmount = myViewModel.calculateTip15(resultTip)
+            roundUpTip(tipAmount)
 
         } else {
             Toast.makeText(this, "Please, Select How was the Service!!!", Toast.LENGTH_SHORT).show()
@@ -120,9 +122,36 @@ class MainActivity : AppCompatActivity() {
             val roundedUp = kotlin.math.ceil(result)
             txtResult.text = "Tip: $ $roundedUp"
 
+            // Update the state in the ViewModel
+            myViewModel.tipResult = result
+
         } else{
             txtResult.text = "Tip: $ $result"
+            
+            // Update the state in the ViewModel
+            myViewModel.tipResult = result
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        // Save the current state of the ViewModel
+        outState.putDouble("tipResult", myViewModel.tipResult)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        // Restore the state of the ViewModel
+        myViewModel.tipResult = savedInstanceState.getDouble("tipResult", 0.0)
+        updateTipResult()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun updateTipResult() {
+        // Update the UI with the state stored in the ViewModel
+        txtResult.text = "Tip: $ ${myViewModel.tipResult}"
     }
 
 }
